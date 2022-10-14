@@ -267,7 +267,7 @@ QString file_parse::parse_one_line(const QString line)
 
   else
   { //判断 器件
-    // cout << "解析到器件" << endl;
+    cout << "解析到器件" << endl;
     bool right = true;
     QStringList strlist = line.split(' ');
     right = check_dev_form(strlist, res, 0);
