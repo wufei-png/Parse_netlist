@@ -1,3 +1,3 @@
 compile: qmake . && make
-run: ./DEMO.exe
+run: ./test
 Enjoy it
