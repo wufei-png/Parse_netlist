@@ -1,5 +1,5 @@
 #include "mainwindow.h"
-#include "add.h"
+#include "util/add.h"
 #include <QAction>
 #include <QDebug>
 #include <QFile>
@@ -11,11 +11,10 @@
 #include <QTextEdit>
 #include <QTextStream>
 #include <QToolBar>
-#include "subwidget.h"
-#include "parse.h"
+
 #include <iostream>
 using namespace std;
-#pragma execution_character_set("utf-8")
+
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) //?
 {
     m_file = new QFile(); //为简便就不弄initfile了
@@ -42,9 +41,17 @@ void MainWindow::initActions()
 
     m_parseAction = new QAction(tr("parsed"), this);
     m_parseAction->setToolTip(tr("use parsed to parse netlist"));
-    connect(m_parseAction, SIGNAL(triggered()), this, SLOT(slotParseNetList()));
+    connect(m_parseAction, SIGNAL(triggered()), this, SLOT(slotParseNetList())); //菜单
 
-    m_fileOpenAction = new QAction(tr("open file123"), this);
+    m_MatrixAction = new QAction(tr("Matrix"), this);
+    m_MatrixAction->setToolTip(tr("use Matrix to calculate the parsed netlist"));
+    connect(m_MatrixAction, SIGNAL(triggered()), this, SLOT(slotMatrixNetList()));
+
+    m_PlotAction = new QAction(tr("Plot"), this);
+    m_PlotAction->setToolTip(tr("use Plotter to Plot"));
+    connect(m_PlotAction, SIGNAL(triggered()), this, SLOT(slotPlotNetList()));
+
+    m_fileOpenAction = new QAction(tr("open file"), this);
     m_fileOpenAction->setShortcut(Qt::CTRL + Qt::Key_O);
     connect(m_fileOpenAction, SIGNAL(triggered()), this, SLOT(slotOpenFile()));
 }
@@ -62,28 +69,51 @@ void MainWindow::initToolbars()
 
     m_Parsebar = addToolBar(tr("Parse")); //这个不显示？？？
     m_Parsebar->addAction(m_parseAction);
+
+    m_Matrixbar = addToolBar(tr("Matrix"));
+    m_Matrixbar->addAction(m_MatrixAction);
+
+    m_Plotbar = addToolBar(tr("Plot"));
+    m_Plotbar->addAction(m_PlotAction);
 }
 void MainWindow::slotParseNetList()
 {
-    cout << 666;
-
+    // cout << 666;
+    // m_circuit = new circuit(m_file);
     QString text;
     cout << m_file;
-    file_parse m_parse(m_file);
-    text = m_parse.parse();
-    QLabel *label = new QLabel();
-    label->setText(text);
-    QFont font("Microsoft YaHei", 10, 75); //第一个属性是字体（微软雅黑），第二个是大小，第三个是加粗（权重是75）
-    label->setFont(font);
-    /** @brief Detail settings for label.
-     * You can find more functions in ref web at the front of this file */
-    label->setAlignment(Qt::AlignCenter);
-    // label->setStyleSheet("QLabel{font:15px;color:red;background-color:rgb(f9,f9,"
-    //  "f9);}");
-    // label->setStyleSheet("font:30px;color:black;background-color:yellow");
-    label->resize(800, 600);
-    label->show(); // label should be shown to be seen.
+    if (m_fileName.isEmpty())
+        QMessageBox::warning(this, tr("Error"), tr("have not opened one file!")); // this还是NULL
+    else
+    {
+        // m_circuit = new circuit(m_file);
+        text = m_circuit->get_parse_res();
+        m_textEdit->append(text);
+    }
+
+    // label->setText(text);
+    // QFont font("Microsoft YaHei", 10, 75); //第一个属性是字体（微软雅黑），第二个是大小，第三个是加粗（权重是75）
+    // label->setFont(font);
+    // /** @brief Detail settings for label.
+    //  * You can find more functions in ref web at the front of this file */
+    // label->setAlignment(Qt::AlignCenter);
+    // // label->setStyleSheet("QLabel{font:15px;color:red;background-color:rgb(f9,f9,"
+    // //  "f9);}");
+    // // label->setStyleSheet("font:30px;color:black;background-color:yellow");
+    // label->resize(800, 600);
+    // label->show(); // label should be shown to be seen.
 }
+void MainWindow::slotMatrixNetList()
+{
+    m_textEdit->append(m_circuit->get_matrix_res());
+}
+
+void MainWindow::slotPlotNetList()
+{
+    qDebug() << "plot";
+    m_circuit->plot_res();
+}
+
 void MainWindow::slotOpenFile()
 {
     qDebug() << "slotOpenFile() --";
@@ -109,12 +139,14 @@ void MainWindow::slotOpenFile()
         }
         else
         {
+            // m_circuit = new circuit(m_file); //为什么在这里不可以?????? bug
             QTextStream textStream(m_file); // Use QTextStream to load text.
             while (!textStream.atEnd())
             {
                 // qDebug() << textStream.readAll();
                 m_textEdit->setPlainText(textStream.readAll());
             }
+            m_circuit = new circuit(m_file); //重新打开一个，要重新new
             // file.close();
         }
     }
