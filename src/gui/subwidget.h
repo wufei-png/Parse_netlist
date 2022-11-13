@@ -1,8 +1,11 @@
 #ifndef SUBWINDOW_H
 #define SUBWINDOW_H
-
+#include <QMainWindow>
 #include <QWidget>
-
+#include <QTextEdit>
+#include <QTextStream>
+#include <QVBoxLayout>
+#include <QDebug>
 class QWidget;
 class QAction;
 class QMenu;
@@ -12,12 +15,8 @@ class QTextEdit;
 class SubWidget : public QWidget
 {
 public:
-    SubWidget(); //？
+    SubWidget(QWidget *parent); //？
     ~SubWidget();
-
-public slots:
-    void slotOpenFile();
-    void slotParse();
 
 private:
     QTextEdit *m_textEdit;

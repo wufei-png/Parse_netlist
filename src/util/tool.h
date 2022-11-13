@@ -21,7 +21,7 @@ using namespace std;
 int qstring2int(QString a); // src/tools
 
 double qstring2double(QString a); // src/tools 解析 +- 123 123.2 12.2k 2e-10
-
+const char *qstring2char(QString &a);
 QString int2qstring(int a);
 string convertDouble(double value);
 string doubleToString(const double &val);

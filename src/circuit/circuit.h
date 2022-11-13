@@ -46,10 +46,11 @@ private:
   vector<int> plot;
   vector<double> tran;
   vector<double> sim; //记录模拟的相关信息
-  int sum_sz;
+
   int branch_sz; // r c l v i中，l和v需要开branch行 而为什么不顺序遇到 l v直接加到矩阵里，是为了和课件的矩阵形式一致？branch放在最后
 public:
   circuit(QFile *file1);
+  int sum_sz;
   ~circuit();
   QString get_parse_res();
   QString get_matrix_res();

@@ -145,3 +145,8 @@ double complex_norm(const complex<double> x, bool is_tran)
   else
     return sqrt(real(x) * real(x) + imag(x) * imag(x));
 }
+
+const char *qstring2char(QString &a)
+{
+  return a.toStdString().c_str();
+}

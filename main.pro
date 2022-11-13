@@ -16,6 +16,7 @@ macx{
 LIBS += -larmadillo
 INCLUDEPATH +=./src
 HEADERS += src/gui/mainwindow.h \
+           src/gui/subwidget.h \
            src/util/add.h \
            src/parse/parse.h \
            src/circuit/circuit.h \
@@ -29,6 +30,7 @@ HEADERS += src/gui/mainwindow.h \
 
 SOURCES += src/main.cpp \
            src/gui/mainwindow.cpp \
+           src/gui/subwidget.cpp \
            src/util/add.cpp \
            src/parse/parse.cpp \
            src/circuit/circuit.cpp \

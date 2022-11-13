@@ -56,12 +56,13 @@ QString circuit::get_parse_res() //不支持修改的话，就做一个缓存，
   else
   {
     has_parsed = true;
-    return m_parser->parse(two_dev_list, four_dev_list, pulse_dev_list, sum_sz, branch_sz, sim, node2row, plot, tran);
+    return m_parser->parse(two_dev_list, four_dev_list, pulse_dev_list, sum_sz, branch_sz, sim, node2row, plot, tran, this);
   }
 }
 
 QString circuit::get_matrix_res()
 {
+  // qDebug() << 111;
   if (has_parsed)
   {
     if (has_matrixed)
@@ -74,8 +75,12 @@ QString circuit::get_matrix_res()
   }
 
   else
+  {
+    qDebug() << 123;
     QMessageBox::warning(NULL, QObject::tr("Error"), QObject::tr("can matrix circuit before parsed netlist"));
-  return QString();
+  }
+
+  return QString("can matrix circuit before parsed netlist");
 }
 void circuit::plot_res()
 {

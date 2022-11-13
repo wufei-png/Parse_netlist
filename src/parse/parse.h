@@ -32,7 +32,7 @@ const QString Vol = QString(" Voltage Source ");
 const QString cap = QString(" Capacitor ");
 const QString out_info = QString("  Output Command Print (Type:");
 const QString L = QString("Inductance");
-
+class circuit;
 struct file_parse
 {
 private:
@@ -64,7 +64,7 @@ public:
   QString get_next_line();
   QString parse_one_line(QString line, vector<TwoPortDevice> &two_dev_list, vector<FourPortDevice> &four_dev_list, vector<PulseDevice> &pulse_dev_list, int &branch_sz, vector<double> &sim, unordered_map<string, int> &node2row, vector<int> &plot, vector<double> &tran);
   QString get_and_parse_one_line(vector<TwoPortDevice> &two_dev_list, vector<FourPortDevice> &four_dev_list, vector<PulseDevice> &pulse_dev_list, int &branch_sz, vector<double> &sim, unordered_map<string, int> &node2row, vector<int> &plot, vector<double> &tran);
-  QString parse(vector<TwoPortDevice> &two_dev_list, vector<FourPortDevice> &four_dev_list, vector<PulseDevice> &pulse_dev_list, int &sum_sz, int &branch_sz, vector<double> &sim, unordered_map<string, int> &node2row, vector<int> &plot, vector<double> &tran);
+  QString parse(vector<TwoPortDevice> &two_dev_list, vector<FourPortDevice> &four_dev_list, vector<PulseDevice> &pulse_dev_list, int &sum_sz, int &branch_sz, vector<double> &sim, unordered_map<string, int> &node2row, vector<int> &plot, vector<double> &tran, circuit *circuit);
   int get_dev_num();  //为了给矩阵提前分配空间
   int get_node_num(); //为了给矩阵提前分配空间
 };

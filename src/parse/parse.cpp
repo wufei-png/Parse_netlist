@@ -48,6 +48,7 @@ Analysis Command: AC (name: DEC ;Start:
 */
 
 #include "parse.h"
+#include "circuit/circuit.h"
 using namespace std;
 
 QString file_parse::get_cur_line()
@@ -184,6 +185,8 @@ bool file_parse::check_dev_form(QStringList &strlist, QString &res, bool sim, ve
       QMessageBox::warning(NULL, QObject::tr("Error"), QObject::tr("ac device type is not V or I"));
     }
   }
+  if (strlist.size() == 3)
+    return false;
   bool is_ac = strlist[3].contains(QRegExp("^[Aa][Cc]$"));
   bool is_dc = strlist[3].contains(QRegExp("^[Dd][Cc]$"));
   if (!sim && strlist.size() == 5 && (is_ac || is_dc)) //在.dc ac中会有其他逻辑检查语法，此处检查器件中的ac :v2 0 1 ac 10
@@ -735,7 +738,7 @@ int file_parse::get_node_num() //为了给矩阵提前分配空间
 {
   return node_map.size();
 }
-QString file_parse::parse(vector<TwoPortDevice> &two_dev_list, vector<FourPortDevice> &four_dev_list, vector<PulseDevice> &pulse_dev_list, int &sum_sz, int &branch_sz, vector<double> &sim, unordered_map<string, int> &node2row, vector<int> &plot, vector<double> &tran)
+QString file_parse::parse(vector<TwoPortDevice> &two_dev_list, vector<FourPortDevice> &four_dev_list, vector<PulseDevice> &pulse_dev_list, int &sum_sz, int &branch_sz, vector<double> &sim, unordered_map<string, int> &node2row, vector<int> &plot, vector<double> &tran, circuit *circuit)
 {
   QString tmp;
   QString res;
@@ -763,6 +766,7 @@ QString file_parse::parse(vector<TwoPortDevice> &two_dev_list, vector<FourPortDe
     qDebug() << x << '\t';
   qDebug() << 666;
   sum_sz = branch_sz + node_map.size();
+  qDebug() << circuit->sum_sz << 666666666;
   return res;
 }
 
